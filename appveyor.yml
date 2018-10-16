@@ -39,17 +39,17 @@ before_build:
 
     - cd openssl
     - git checkout %version%
-    - mkdir _build
-    - cd _build
-    - cmd: echo perl ..\Configure %TARGET% %SHARED%
-    - perl ..\Configure %TARGET% %SHARED%
+    ##- mkdir _build
+    ##- cd _build
+    - cmd: echo perl Configure %TARGET% %SHARED%
+    - perl Configure %TARGET% %SHARED%
     - perl configdata.pm --dump
-    - cd ..
-    - ps: >-
-        if (-not $env:APPVEYOR_PULL_REQUEST_NUMBER`
-            -or (&git log -2 | Select-String "\[extended tests\]") ) {
-            $env:EXTENDED_TESTS="yes"
-        }
+      ##- cd ..
+    ##- ps: >-
+    ##    if (-not $env:APPVEYOR_PULL_REQUEST_NUMBER`
+    ##        -or (&git log -2 | Select-String "\[extended tests\]") ) {
+    ##        $env:EXTENDED_TESTS="yes"
+    ##    }
 
 ##build_script:
 ##    - cd _build
