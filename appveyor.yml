@@ -4,8 +4,9 @@ platform:
 
 environment:
     fast_finish: true
+
+    VSVER: 14
     matrix:
-        - VSVER: 14
         - version: "OpenSSL_1_0_2o"
         - version: "OpenSSL_1_0_2p"
 
