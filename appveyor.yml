@@ -8,7 +8,7 @@ environment:
     VSVER: 14
     matrix:
         - version: "OpenSSL_1_0_2p"
-        - version: "OpenSSL_1_0_2o"
+        #- version: "OpenSSL_1_0_2o"
 
 
 configuration:
@@ -28,9 +28,11 @@ before_build:
     - ps: >-
         If ($env:Configuration -Match "shared") {
             $env:SHARED="no-makedepend"
+            $env:MAK="ntdll.mak"
         } Else {
             ##$env:SHARED="no-shared no-makedepend"
             $env:SHARED="no-shared "
+            $env:MAK="nt.mak"
         }
     - ps: $env:VSCOMNTOOLS=(Get-Content ("env:VS" + "$env:VSVER" + "0COMNTOOLS"))
     - call "%VSCOMNTOOLS%\..\..\VC\vcvarsall.bat" %VCVARS_PLATFORM%
@@ -43,15 +45,15 @@ before_build:
     ##- cd _build
     - cmd: echo perl Configure %TARGET% %SHARED%
     - perl Configure %TARGET% %SHARED%
-    - perl configdata.pm --dump
-      ##- cd ..
+    ##- perl configdata.pm --dump
+    ##- cd ..
     ##- ps: >-
     ##    if (-not $env:APPVEYOR_PULL_REQUEST_NUMBER`
     ##        -or (&git log -2 | Select-String "\[extended tests\]") ) {
     ##        $env:EXTENDED_TESTS="yes"
     ##    }
 
-##build_script:
+build_script:
 ##    - cd _build
 ##    - ps: >-
 ##        If ($env:Configuration -Match "shared" -or $env:EXTENDED_TESTS) {
@@ -59,7 +61,8 @@ before_build:
 ##            cmd /c "nmake PERL=no-perl 2>&1"
 ##        }
 ##    - cd ..
-##    - dir/s *.exe *.lib *.dll *.cnf
+    - nmake /f ms\%MAK%
+    - dir/s *.exe *.lib *.dll *.cnf
 
 #test_script:
 #    - cd _build
