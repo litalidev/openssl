@@ -7,8 +7,8 @@ environment:
 
     VSVER: 14
     matrix:
-        - version: "OpenSSL_1_0_2o"
         - version: "OpenSSL_1_0_2p"
+        - version: "OpenSSL_1_0_2o"
 
 
 configuration:
@@ -29,7 +29,8 @@ before_build:
         If ($env:Configuration -Match "shared") {
             $env:SHARED="no-makedepend"
         } Else {
-            $env:SHARED="no-shared no-makedepend"
+            ##$env:SHARED="no-shared no-makedepend"
+            $env:SHARED="no-shared "
         }
     - ps: $env:VSCOMNTOOLS=(Get-Content ("env:VS" + "$env:VSVER" + "0COMNTOOLS"))
     - call "%VSCOMNTOOLS%\..\..\VC\vcvarsall.bat" %VCVARS_PLATFORM%
